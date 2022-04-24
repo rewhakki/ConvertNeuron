@@ -16,10 +16,10 @@ public:
         return output / weight;
     }
 
-    void Train(long float input, long float expResult)
+    void Train(long float input, long float expectedResult)
     {
         long float actResult = input * weight;
-        Error = expResult - actResult;
+        Error = expectedResult - actResult;
         long float correction = (Error / actResult) * Smooth;
         weight += correction;
     }
@@ -32,11 +32,11 @@ private:
 int main()
 {
     long float usd = 1;
-    long float rub = 77.23;
-    int input;
+    long float eur = 0.93;
+    long float userInput;
 
-    std::cout << "Enter rubles: ";
-    std::cin >> input;
+    std::cout << "Enter euro: ";
+    std::cin >> userInput;
     std::cout << "\n";
 
     Neuron neuron = Neuron();
@@ -45,12 +45,12 @@ int main()
     do
     {
         i++;
-        neuron.Train(usd, rub);
+        neuron.Train(usd, eur);
 
         //  Output every iteration!
         std::cout << "Iteration: " << i << "\t\tError: " << neuron.Error << "\n";
 
-        //  Output every n iteration!
+        //  Output every i iteration!
         /*
             if (i % 11 == 0) {
             std::cout << "Iteration: " << i << "\t\tError: " << neuron.LastError << "\n";
@@ -59,6 +59,9 @@ int main()
 
     } while (neuron.Error > neuron.Smooth || neuron.Error < -neuron.Smooth);
 
-    std::cout << "\n[" << input << "] rubles is [" << neuron.RestoreData(input) << "] dollars.\n";
+    std::cout << "\n[" << userInput << "] euro is [" << neuron.RestoreData(userInput) << "] dollars.\n";
+    
+    //Reverse conversion
+    //std::cout << "\n[" << userInput << "] dollars is [" << neuron.ProcessData(userInput) << "] euro.\n";
 
 }
